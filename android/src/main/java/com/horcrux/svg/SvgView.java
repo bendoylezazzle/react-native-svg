@@ -58,6 +58,8 @@ public class SvgView extends ViewGroup {
     private long mGestureStartTime = TouchEvent.UNSET;
     private int mTargetTag;
 
+    private SvgViewShadowNode mShadowNode;
+
     private final TouchEventCoalescingKeyHelper mTouchEventCoalescingKeyHelper =
             new TouchEventCoalescingKeyHelper();
 
@@ -76,6 +78,17 @@ public class SvgView extends ViewGroup {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         SvgViewManager.dropSvgView(this);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        SvgViewManager.setSvgView(this);
+        if (mShadowNode == null) {
+            mShadowNode = getShadowNode();
+        } else {
+            SvgViewManager.setShadowNode(mShadowNode);
+        }
     }
 
     public void setBitmap(Bitmap bitmap) {
